@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Command Interface</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Arial', sans-serif; }
+        #log-content { white-space: pre-wrap; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl">
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">Command Interface</h1>
+        <form method="POST" class="mb-4">
+            <div class="flex items-center">
+                <input type="text" name="command" placeholder="Enter command (e.g., list files in current directory)" 
+                       class="w-full p-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <button type="submit" class="bg-blue-500 text-white p-2 rounded-r-md hover:bg-blue-600">
+                    Run
+                </button>
+            </div>
+        </form>
+        <div class="mb-4">
+            <h2 class="text-lg font-semibold text-gray-700">Converted Command</h2>
+            <p class="p-2 bg-gray-200 rounded-md">{{ converted_command | safe }}</p>
+        </div>
+        <div class="mb-4">
+            <h2 class="text-lg font-semibold text-gray-700">Output</h2>
+            {% if dir_items %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Size</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in dir_items %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.date }}</td>
+                        <td>{{ item.size }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <pre class="p-2 bg-gray-200 rounded-md">{{ output | safe }}</pre>
+            {% endif %}
+        </div>
+        <div>
+            <h2 class="text-lg font-semibold text-gray-700">Command Log</h2>
+            <pre id="log-content" class="p-2 bg-gray-200 rounded-md max-h-64 overflow-y-auto">{{ log_content | safe }}</pre>
+        </div>
+    </div>
+</body>
+</html>
